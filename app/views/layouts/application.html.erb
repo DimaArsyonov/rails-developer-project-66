@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Rails Developer Project 66" %></title>
+    <title><%= content_for(:title) || 'Rails Developer Project 66' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -21,6 +21,28 @@
   </head>
 
   <body>
+    <nav class="flex justify-center py-3">
+      <div class="flex w-fit gap-6 border-b border-gray-200 px-3 pb-2">
+        <%= button_to 'Главная', root_path, class: 'text-lg font-medium text-black-700 hover:text-gray-900' %>
+        <% if current_user %>
+          <%= button_to 'Репозитории', '#', class: 'text-lg font-medium text-black-700 hover:text-gray-900' %>
+          <%= button_to 'Выйти', logout_path, method: :delete, class: 'text-lg font-medium text-black-700 hover:text-gray-900' %>
+        <% else %>
+          <% Rails.configuration.x.auth_providers.each do |provider, provider_name| %>
+            <%= button_to auth_request_path(provider: provider),
+                method: :post,
+                data: { turbo: false },
+                form_class: 'flex items-center',
+                class: 'cursor-pointer border-0 bg-transparent p-0 text-lg font-medium text-black hover:text-gray-900' do %>
+                  <%= t(".sign_in", provider: provider_name) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </nav>
+
+    <%= render 'shared/flash' %>
+
     <%= yield %>
   </body>
 </html>

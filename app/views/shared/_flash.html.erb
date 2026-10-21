@@ -1,0 +1,7 @@
+<% flash.each do |type, msg| %>
+  <div class="mb-3">
+    <div class="rounded border px-4 py-3 <%= flash_classes(type) %>" role="alert">
+      <%= msg %>
+    </div>
+  </div>
+<% end %>
